@@ -10,7 +10,9 @@ exports.findAll = (req, res) => {
       res.send(data);
     }
   });
+  
 };
+
 exports.create = (req, res) => {
 
     if (!req.body.product_name || !req.body.price || !req.body.category_id) {
@@ -23,6 +25,7 @@ exports.create = (req, res) => {
         price: req.body.price,
         category_id: req.body.category_id
     });
+
 
     Product.create(newProduct, (error, data) => {
         if (error) {
@@ -43,9 +46,9 @@ exports.update = (req, res) => {
     Product.updateById(req.params.id, req.body, (error, data) => {
         if (error) {
             if (error.kind === "not_found") {
-                res.status(404).send({ message: `Product with id ${req.params.id} not found.` });
+                res.status(404).send({ message: `Product with id ${req.params.id} not found. `});
             } else {
-                res.status(500).send({ message: `Error updating product with id ${req.params.id}` });
+                res.status(500).send({ message: `Error updating product with id ${req.params.id} `});
             }   
          } else {
             res.send(data);
@@ -53,39 +56,18 @@ exports.update = (req, res) => {
     });
 };
 
+
 exports.delete = (req, res) => {
 
     Product.remove(req.params.id, (error, data) => {
         if (error) {
             if (error.kind === "not_found") {
-                res.status(404).send({ message: `Product with id ${req.params.id} not found.` });
+                res.status(404).send({ message: `Product with id ${req.params.id} not found. `});
             } else {
-                res.status(500).send({ messae: `Could not delete product with id ${req.params.id}` });
+                res.status(500).send({ messae: `Could not delete product with id ${req.params.id} `});
             }
         } else {
             res.send({ message: "Product was deleted successfully!" });
-        }
-    });
-};
-
-
-
-// ✅ ฟังก์ชันใหม่: เพิ่มหลายรายการแบบไม่เปลี่ยนสไตล์เดิม
-exports.createMany = (req, res) => {
-
-    if (!Array.isArray(req.body)) {
-        res.status(400).send({ message: "Input must be an array of products!" });
-        return;
-    }
-
-    Product.createMany(req.body, (error, data) => {
-        if (error) {
-            res.status(500).send({ message: error.message || "Some error occurred while creating many products." });
-        } else {
-            res.status(201).send({
-                message: "Products created successfully!",
-                data: data
-            });
         }
     });
 };
