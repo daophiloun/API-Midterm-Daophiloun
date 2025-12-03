@@ -1,11 +1,23 @@
+
 const express = require("express");
-const apiRouter = require("./routes/apiRoute");
+const bodyParser = require("body-parser");
 
 const app = express();
-const port = 3000;
 
-app.use(apiRouter);
 
-app.listen(port, () => {
-  console.log(`Lao-Top API running at http://localhost:${port}`);
+app.use(bodyParser.json());
+
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
+app.get("/", (req, res) => {
+  res.json({ message: "Welcome to NodeJS + Express + MySQL application." });
+});
+
+require("./app/routes/product.route.js")(app);
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000.");
+
 });

@@ -1,12 +1,20 @@
-const Students = [
-  { name: "Sith", age: 20, class: "Web" },
-  { name: "Maly", age: 22, class: "App" },
-  { name: "Phet", age: 19, class: "Biz" },
-  { name: "Dao", age: 21, class: "Eng" },
-];
+const sql = require("./db.js");
 
-const studentmodel = {
-  getAllStudents: () => Students,
+const Student = function(student) {
+  this.name = student.name;
+  this.age = student.age;
+  this.major = student.major;
 };
 
-module.exports = studentmodel;
+Student.getAll = result => {
+  sql.query("SELECT * FROM students", (err, res) => {
+    if (err) {
+      console.log("Error: ", err);
+      result(err, null);
+      return;
+    }
+    result(null, res);
+  });
+};
+
+module.exports = Student;
